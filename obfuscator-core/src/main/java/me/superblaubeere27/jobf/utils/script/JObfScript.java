@@ -24,7 +24,7 @@ public class JObfScript {
     public JObfScript(String script) {
         try {
             jsEngine = new ScriptEngineManager().getEngineByName("nashorn");
-            jsEngine.eval(script);
+            //jsEngine.eval(script);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to compile Script", e);
         }

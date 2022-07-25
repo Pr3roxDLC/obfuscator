@@ -14,58 +14,44 @@ import me.superblaubeere27.annotations.ObfuscationTransformer;
 import me.superblaubeere27.jobf.IClassTransformer;
 import me.superblaubeere27.jobf.JObfImpl;
 import me.superblaubeere27.jobf.ProcessorCallback;
+import me.superblaubeere27.jobf.utils.NameUtils;
+import me.superblaubeere27.jobf.utils.values.BooleanValue;
 import me.superblaubeere27.jobf.utils.values.DeprecationLevel;
 import me.superblaubeere27.jobf.utils.values.EnabledValue;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.MethodNode;
 
-import java.util.Random;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 
-public class HideMembers implements IClassTransformer {
-    private static final String PROCESSOR_NAME = "HideMembers";
-    private static Random random = new Random();
+public class LocalVariableReplacer implements IClassTransformer {
+
+
+    private EnabledValue enabled = new EnabledValue("LocalVariableReplacer", DeprecationLevel.GOOD, true);
     private JObfImpl inst;
-    private EnabledValue enabled = new EnabledValue(PROCESSOR_NAME, DeprecationLevel.GOOD, false);
 
-    public HideMembers(JObfImpl inst) {
+    public LocalVariableReplacer(JObfImpl inst) {
         this.inst = inst;
     }
 
     @Override
     public void process(ProcessorCallback callback, ClassNode node) {
-        if (!enabled.getObject()) return;
-
-        if ((node.access & Opcodes.ACC_INTERFACE) == 0) {
-            for (MethodNode method : node.methods) {
-//            if ((method.access & Opcodes.ACC_BRIDGE) == 0 && (method.access & Opcodes.ACC_STATIC) == 0 && !method.name.startsWith("<")) {
-//                method.access |= Opcodes.ACC_BRIDGE;
-//            }
-//            if ((method.access & Opcodes.ACC_SYNTHETIC) == 0) {
-                if (method.name.startsWith("<"))
-                    continue;
-                if ((method.access & Opcodes.ACC_NATIVE) == 0) {
-                    continue;
-                }
-                method.access = method.access | Opcodes.ACC_BRIDGE;
-                method.access = method.access | Opcodes.ACC_SYNTHETIC;
-//            }
+        if(!enabled.getObject())return;
+      // node.methods.forEach(methodNode -> methodNode.localVariables.forEach(n -> n.name="\uD834\uDD78"));
+        node.methods.forEach(methodNode -> methodNode.localVariables.forEach(n ->{
+            if(n.name.equals("this")){
+                n.name = "_";
+            }else{
+                n.name = "\uD834\uDD78\n";
             }
-        }
-        for (FieldNode field : node.fields) {
-//            if ((field.access & Opcodes.ACC_FINAL) == 0)
-            field.access = field.access | Opcodes.ACC_SYNTHETIC;
-        }
-//        if ((node.access & Opcodes.ACC_FINAL) == 0) {
-//            node.access = node.access | Opcodes.ACC_SYNTHETIC;
-//        }
+        }));
         inst.setWorkDone();
     }
 
     @Override
     public ObfuscationTransformer getType() {
-        return ObfuscationTransformer.HIDE_MEMBERS;
+        return ObfuscationTransformer.LOCAL_VARIABLE_REPLACER;
     }
+
 
 }

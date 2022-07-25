@@ -36,7 +36,7 @@ public class StringEncryptionTransformer implements IClassTransformer {
     private static final String PROCESSOR_NAME = "StringEncryption";
     private static Random random = new Random();
     private JObfImpl inst;
-    private EnabledValue enabled = new EnabledValue(PROCESSOR_NAME, DeprecationLevel.GOOD, true);
+    private EnabledValue enabled = new EnabledValue(PROCESSOR_NAME, DeprecationLevel.GOOD, false);
     private BooleanValue hideStrings = new BooleanValue(PROCESSOR_NAME, "HideStrings", "Hide strings in SourceFile. Might break after editing the SourceFile", DeprecationLevel.OK, false);
     private BooleanValue aes = new BooleanValue(PROCESSOR_NAME, "AES", DeprecationLevel.OK, false);
 

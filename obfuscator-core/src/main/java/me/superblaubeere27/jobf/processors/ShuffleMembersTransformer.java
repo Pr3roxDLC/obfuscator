@@ -28,7 +28,7 @@ public class ShuffleMembersTransformer implements IClassTransformer {
     private static final String PROCESSOR_NAME = "ShuffleMembers";
     private static Random random = new Random();
     private JObfImpl inst;
-    private EnabledValue enabled = new EnabledValue(PROCESSOR_NAME, DeprecationLevel.GOOD, true);
+    private EnabledValue enabled = new EnabledValue(PROCESSOR_NAME, DeprecationLevel.GOOD, false);
 
     public ShuffleMembersTransformer(JObfImpl inst) {
         this.inst = inst;

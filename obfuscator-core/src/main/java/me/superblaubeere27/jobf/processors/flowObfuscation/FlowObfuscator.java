@@ -37,7 +37,7 @@ public class FlowObfuscator implements IClassTransformer {
     private static final String PROCESSOR_NAME = "FlowObfuscator";
     private static Random random = new Random();
     private JObfImpl inst;
-    private EnabledValue enabled = new EnabledValue(PROCESSOR_NAME, DeprecationLevel.GOOD, true);
+    private EnabledValue enabled = new EnabledValue(PROCESSOR_NAME, DeprecationLevel.GOOD, false);
     private BooleanValue mangleComparisions = new BooleanValue(PROCESSOR_NAME, "Mangle Comparisons", "Replaces long, float and double comparisons with method calls", DeprecationLevel.GOOD, true);
     private BooleanValue replaceGoto = new BooleanValue(PROCESSOR_NAME, "Replace GOTO", "Replaces unconditional jumps with conditionals", DeprecationLevel.GOOD, true);
     private BooleanValue replaceIf = new BooleanValue(PROCESSOR_NAME, "Replace If", "Replaces comparisions with method calls", DeprecationLevel.GOOD, true);
